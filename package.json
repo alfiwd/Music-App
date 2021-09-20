@@ -1,0 +1,21 @@
+{
+  "name": "music-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Alfian Widitama",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-sesssion": "^1.15.5",
+    "formidable": "^1.2.2",
+    "handlebars-dateformat": "^1.1.1",
+    "hbs": "^4.1.2",
+    "mysql2": "^2.3.0",
+    "nodemon": "^2.0.12"
+  }
+}

@@ -1,0 +1,85 @@
+{{> header}}
+
+    {{> navbar}}
+
+    <div class="container-fluid playlist">
+      <div class="container">
+        <h2 class="text-center mt-5">Playlist {{userEmail}}</h2>
+        {{#if notEmpty}}
+          <table class="table table-bordered table-hover mt-5 text-center align-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Nama Playlist</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each onlyName}}
+                <tr>
+                  <td><a href="/playlist/{{this.name}}">{{this.name}}</a></td>
+                  <td>
+                    <button class="btn btn-danger" style="width: 40px; height: 40px" onclick="deletePlaylist('{{this.name}}')" ><i class='bx bxs-trash-alt'></i></button>
+                    <button class="btn btn-warning" style="width: 40px; height: 40px" data-bs-toggle="modal" data-bs-target="#edit-playlist-{{this.withoutSpace}}"><i class='bx bx-pencil'></i></button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          <div class="text-center">
+            <img src="/public/img/img banner.svg" style="width: 50%;">
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- Modal Edit Playlist --}}
+    {{#each onlyName}}
+      <div class="modal fade" id="edit-playlist-{{this.withoutSpace}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"><i class='bx bxs-pencil'></i> Edit Playlist</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/edit-playlist/{{this.name}}" method="POST">
+                <div class="mb-3">
+                  <label for="edit-playlist" class="col-form-label">Nama Playlist Baru:</label>
+                  <input type="text" class="form-control" id="edit-playlist" name="playlist" placeholder="{{this.name}}" required="" autocomplete="off">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-warning">Edit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    {{!-- End modal edit playlist --}}
+
+    {{!-- Delete Playlist --}}
+    <script>
+      function deletePlaylist(playlistName){
+        Swal.fire({
+          icon: "warning",
+          title: "Apakah ingin menghapus?",
+          showCancelButton: true,
+          confirmButtonColor: "#DC3545",
+          cancelButtonColor: "#0D6EFD",
+          confirmButtonText: "Hapus",
+        }).then((result) => {
+          if(result.isConfirmed){
+            location.href = `/delete-playlist/${playlistName}`;
+          }
+        })
+      }
+    </script>
+    {{!-- End Delete Playlist --}}
+
+    {{> notification}}
+
+    {{> copyright}}
+
+{{> footer}}    

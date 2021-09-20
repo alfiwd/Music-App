@@ -1,0 +1,105 @@
+{{> header}}
+
+    {{> navbar}}
+
+    <div class="container-fluid genre">
+      <div class="container">
+        <div class="row">
+          {{!-- ------------ --}}
+          <div class="col-md-5">
+            <div class="card mt-5">
+              <div class="card-header"><i class='bx bxs-add-to-queue'></i> Tambah Genre</div>
+              <div class="card-body">
+                <form action="/genre" method="post">
+                  <label for="add-genre" class="form-label">Nama Genre</label>
+                  <input type="text" name="genre" class="form-control" id="add-genre" required="" autocomplete="off">
+              </div>
+              <div class="card-footer text-end">
+                  <button type="submit" class="btn btn-primary">Tambah Genre</button>
+                </form>  
+              </div>
+            </div>
+          </div>
+          
+          {{!-- ------------ --}}
+          <div class="col-md-7">
+            {{#if notEmpty}}
+              <table class="table table-bordered table-hover mt-5 text-center align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Nama Genre</th>
+                    <th scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each genres}}
+                    <tr>
+                      <td>{{this.name}}</td>
+                      <td>
+                        <button class="btn btn-danger" style="width: 40px; height: 40px" onclick="deleteGenre({{this.id}})" ><i class='bx bxs-trash-alt'></i></button>
+                        <button class="btn btn-warning" style="width: 40px; height: 40px" data-bs-toggle="modal" data-bs-target="#edit-genre-{{this.id}}"><i class='bx bx-pencil'></i></button>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            {{else}}
+              <div class="text-center">
+                <img src="/public/img/img banner.svg" style="width: 300px;">
+              </div>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{!-- Modal edit genre --}}
+    {{#each genres}}
+      <div class="modal fade" id="edit-genre-{{this.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"><i class='bx bxs-pencil'></i> Edit Genre</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/edit-genre/{{this.id}}" method="POST">
+                <div class="mb-3">
+                  <label for="edit-genre" class="col-form-label">Nama Genre Baru:</label>
+                  <input type="text" class="form-control" id="edit-genre" name="genre" placeholder="{{this.name}}" required="" autocomplete="off">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-warning">Edit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    {{!-- End modal edit genre --}}
+
+    {{!-- Delete genre --}}
+    <script>
+      function deleteGenre(id){
+        Swal.fire({
+          icon: "warning",
+          title: "Apakah ingin menghapus?",
+          showCancelButton: true,
+          confirmButtonColor: "#DC3545",
+          cancelButtonColor: "#0D6EFD",
+          confirmButtonText: "Hapus",
+        }).then((result) => {
+          if(result.isConfirmed){
+            location.href = `/delete-genre/${id}`;
+          }
+        })
+      }
+    </script>
+    {{!-- End delete genre --}}
+
+    {{> notification}}
+
+    {{> copyright}}
+
+{{> footer}}    

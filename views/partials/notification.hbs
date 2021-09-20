@@ -1,0 +1,7 @@
+{{! Notification Message }}
+{{#if message}}
+  <script>
+    Swal.fire({ icon: "{{message.icon}}", title: "{{message.title}}" });
+  </script>
+{{/if}}
+{{! End Notification Message }}

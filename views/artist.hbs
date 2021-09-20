@@ -1,0 +1,139 @@
+{{> header}}
+
+    {{> navbar}}
+
+    <div class="container-fluid artist">
+      <div class="container">
+        <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#add-artist"><i class='bx bxs-add-to-queue' ></i> Tambah Artist</button>
+        {{#if notEmpty}}
+          <table class="table table-bordered table-hover mt-3 text-center align-middle">
+            <thead class="table-light align-middle">
+              <tr>
+                <th scope="col">Nama Artis</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Memulai Karir</th>
+                <th scope="col">Tentang Artis</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each artists}}
+                <tr>
+                  <td>{{this.name}}</td>
+                  <td><img src="/uploads/img/{{this.photo}}" alt="..." style="width:250px;"></td>
+                  <td>{{dateFormat this.start_career "DD MMMM YYYY"}}</td>
+                  <td>{{this.about}}</td>
+                  <td>
+                    <button class="btn btn-danger mb-2" onclick="deleteArtist({{this.id}})" style="width: 40px; height: 40px"><i class='bx bxs-trash-alt'></i></button>
+                    <button class="btn btn-warning" style="width: 40px; height: 40px" data-bs-toggle="modal" data-bs-target="#edit-artist-{{this.id}}"><i class='bx bx-pencil'></i></button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          <div class="text-center">
+            <img src="/public/img/img banner.svg" style="width: 50%;">
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- Modal add artist --}}
+    <div class="modal fade" id="add-artist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><i class='bx bxs-add-to-queue'></i> Tambah Artist</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/artist" method="POST" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="artist-name" class="col-form-label">Nama Artist:</label>
+                <input type="text" class="form-control" id="artist-name" name="artist" placeholder="Masukkan nama artist" required="" autocomplete="off">
+              </div>
+              <div class="mb-3">
+                <label for="start-career" class="col-form-label">Memulai Karir:</label>
+                <input type="date" class="form-control" name="career" id="start-career" required="">
+              </div>
+              <div class="mb-3">
+                <label for="artist-photo" class="col-form-label">Foto:</label>
+                <input type="file" class="form-control" name="photo" id="artist-photo" accept="image/*" required="">
+              </div>
+              <div class="mb-3">
+                <label for="about-artist" class="col-form-label">Tentang Artist:</label>
+                <textarea name="about" class="form-control" id="about-artist" rows="8" required=""></textarea>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Tambah</button>
+            </form>  
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- End modal add artist --}}
+
+    {{!-- Modal edit artist --}}
+    {{#each artists}}
+      <div class="modal fade" id="edit-artist-{{this.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"><i class='bx bxs-add-to-queue'></i> Edit Artist</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/edit-artist/{{this.id}}" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="artist-name" class="col-form-label">Nama Artist:</label>
+                  <input type="text" class="form-control" id="artist-name" name="artist" placeholder="{{this.name}}" required="" autocomplete="off">
+                </div>
+                <div class="mb-3">
+                  <label for="start-career" class="col-form-label">Memulai Karir:</label>
+                  <input type="date" class="form-control" name="career" id="start-career" value="{{dateFormat this.start_career "YYYY-MM-DD"}}" required="">
+                </div>
+                <div class="mb-3">
+                  <label for="artist-photo" class="col-form-label">Foto:</label>
+                  <input type="file" class="form-control" name="photo" id="artist-photo" accept="image/*" required="">
+                </div>
+                <div class="mb-3">
+                  <label for="about-artist" class="col-form-label">Tentang Artist:</label>
+                  <textarea name="about" class="form-control" id="about-artist" rows="8" required=""></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Edit</button>
+              </form>  
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    {{!-- End modal edit artist --}}
+
+    {{!-- Delete artist --}}
+    <script>
+      function deleteArtist(id){
+        Swal.fire({
+          icon: "warning",
+          title: "Apakah ingin menghapus?",
+          showCancelButton: true,
+          confirmButtonColor: "#DC3545",
+          cancelButtonColor: "#0D6EFD",
+          confirmButtonText: "Hapus",
+        }).then((result) => {
+          if(result.isConfirmed){
+            location.href = `/delete-artist/${id}`;
+          }
+        })
+      }
+    </script>
+    {{!-- End delete artist --}}
+
+    {{> notification}}
+
+    {{> copyright}}
+
+{{> footer}}    

@@ -1,0 +1,203 @@
+{{> header}}
+
+    {{> navbar}}
+
+    {{!-- Banner --}}
+    <div class="container-fluid banner bg-dark p-3">
+      <div class="container text-center text-light">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <h3 class="mb-4">Temukan Musik Kesukaanmu</h3>
+            <p class="mb-4">Dengarkan musik kesukaanmu dengan santai<br>secara gratis tanpa iklan</p>
+            {{#if isLogin}}
+              <p>Selamat datang <span class="text-primary">{{userEmail}}</span> di <i class="bx bxs-music" style="color: #0D6EFD;"></i> Music App</p>
+            {{else}}
+              <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sign-up">Sign Up</a>
+            {{/if}}
+          </div>
+          <div class="col-md-6">
+            <img src="/public/img/img banner.svg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- End Banner --}}
+
+    {{!-- Search --}}
+    <div class="container-fluid">
+      <div class="container">
+        <form action="/search" method="POST">
+          <div class="search d-flex justify-content-center m-auto my-4">
+            <input type="text" class="form-control me-3" placeholder="Cari musik disini" name="search" autocomplete="off">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {{!-- End Search --}}
+
+    {{!-- Song List --}}
+    <div class="container-fluid song-fluid">
+      <div class="container song-container">
+        <h3 class="text-center">Daftar Lagu <i class="bx bxs-music" style="color: #0D6EFD;"></i> Music App</h3>
+        {{#if isEmpty}}
+          <div class="text-center">
+            <img src="/public/img/img banner.svg" alt="..." style="width: 50%;">
+          </div>
+        {{/if}}
+        <div class="row justify-content-center">
+          {{#if isUser}}
+            {{#each musics}}
+              <div class="card-music col-md-3 mt-4">
+                <img src="/uploads/img/{{this.cover_music}}" alt="..." class="card-img-top">
+                <h6 class="genre-name mt-1">#{{this.genre}}</h6>
+                <p>{{this.title}}</p>
+                <div class="row align-items-center mb-4">
+                  <div class="col-md-2">
+                    <img src="/uploads/img/{{this.photo}}" alt="..." class="img-artist" data-bs-toggle="modal" data-bs-target="#detailArtist{{this.id}}">
+                  </div>
+                  <div class="col-md-7">
+                    <p class="artist-name mt-3">{{this.artis}}</p>
+                  </div>
+                  <div class="col-md-3 text-center">
+                    <a class="playlist-button" data-bs-toggle="modal" data-bs-target="#playlist{{this.id}}"><i class='bx bxs-playlist'></i></a>
+                  </div>
+                  <audio src="/uploads/music/{{this.music}}" class="mt-2" controls></audio>
+                </div>
+              </div>
+            {{/each}}
+          {{else}}
+            {{#each musics}}
+              <div class="card-music col-md-3 mt-4">
+                <img src="/uploads/img/{{this.cover_music}}" alt="..." class="card-img-top">
+                <h6 class="genre-name mt-1">#{{this.genre}}</h6>
+                <p>{{this.title}}</p>
+                <div class="row align-items-center mb-4">
+                  <div class="col-md-2">
+                    <img src="/uploads/img/{{this.photo}}" alt="..." class="img-artist" data-bs-toggle="modal" data-bs-target="#detailArtist{{this.id}}">
+                  </div>
+                  <div class="col-md-7">
+                    <p class="artist-name mt-3">{{this.artis}}</p>
+                  </div>
+                  <audio src="/uploads/music/{{this.music}}" class="mt-2" controls></audio>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    {{!-- End Song List --}}
+
+    {{! Modal Login }}
+    <div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><i class='bx bx-horizontal-center'></i> Login App</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/login" method="POST">
+              <div class="mb-3">
+                <label for="login-email" class="col-form-label">Email:</label>
+                <input type="email" class="form-control" id="login-email" name="email" autocomplete="off" required="" placeholder="Masukkan email kamu">
+              </div>
+              <div class="mb-3">
+                <label for="login-password" class="col-form-label">Password:</label>
+                <input type="password" class="form-control" id="login-password" name="password" autocomplete="off" required="" placeholder="Masukkan password kamu">
+              </div>
+          </div>
+          <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{! End Modal Login }}
+
+    {{!-- Modal Sign Up --}}
+    <div class="modal fade" id="sign-up" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><i class='bx bx-horizontal-center'></i> Sign Up App</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/sign-up" method="POST">
+              <div class="mb-3">
+                <label for="sign-up-email" class="col-form-label">Email:</label>
+                <input type="email" class="form-control" id="sign-up-email" name="email" autocomplete="off" required="" placeholder="Masukkan email kamu">
+              </div>
+              <div class="mb-3">
+                <label for="sign-up-password" class="col-form-label">Password:</label>
+                <input type="password" class="form-control" id="sign-up-password" name="password" autocomplete="off" required="" placeholder="Masukkan password kamu">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Sign Up</button>
+            </form>  
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- End Sign Up --}}
+
+    {{!-- Modal Artist --}}
+    {{#each musics}}
+      <div class="modal fade" id="detailArtist{{this.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"><span style="color: #0D6EFD;">{{this.artis}}</span></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <img src="/uploads/img/{{this.photo}}" alt="..." style="width: 100%;">
+              <p>Nama Artis : <span style="color: #0D6EFD;">{{this.artis}}</span></p>
+              <p>Memulai Karir Pada : <span style="color: #0D6EFD;">{{dateFormat this.start_career "DD MMMM YYYY"}}</span></p>
+              <p>Tentang {{this.artis}} : <span style="color: #0D6EFD;">{{this.about}}</span></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    {{!-- End Modal Atist --}}
+
+    {{!-- Modal Playlist --}}
+    {{#each musics}}
+      <div class="modal fade" id="playlist{{this.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"><i class='bx bxs-add-to-queue'></i> Tambah Ke Playlist</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/add-playlist" method="POST">
+                <div class="mb-3">
+                  <label for="add-playlist" class="col-form-label">Nama Playlist:</label>
+                  <input type="text" class="form-control" id="add-playlist" name="addPlaylist" autocomplete="off">
+                  <input type="hidden" name="musicId" value="{{this.id}}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Tambah</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    {{!-- End Modal Playlist --}}
+
+    {{> notification}}
+
+    {{> copyright}}
+
+{{> footer}}

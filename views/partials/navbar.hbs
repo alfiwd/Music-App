@@ -1,0 +1,46 @@
+{{! Navbar }}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/"><i class="bx bxs-music" style="color: #0D6EFD;"></i> Music App</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {{#if isAdmin}}
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive.genre}}active{{/if}}" aria-current="page" href="/genre"><i class='bx bxs-speaker' style="color: #198754;"></i> Kelola Genre</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{#if isActive.artist}}active{{/if}}" aria-current="page" href="/artist"><i class='bx bxs-microphone-alt' style="color: #198754;"></i> Kelola Artist</a>
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link {{#if isActive.music}}active{{/if}}" aria-current="page" href="/music"><i class='bx bxs-music' style="color: #198754;"></i> Kelola Music</a>
+          </li>
+        {{/if}}
+        {{#if isUser}}
+          <li class="nav-item me-3">
+            <a class="nav-link {{#if isActive.playlist}}active{{/if}}" aria-current="page" href="/playlist"><i class='bx bxs-playlist' style="color: #198754;"></i> Kelola Playlist</a>
+          </li>
+        {{/if}}
+        {{#if isLogin}}
+          <li class="nav-item">
+            <button type="button" class="btn btn-outline-danger" onclick="logout()">Logout</button>
+          </li>
+        {{else}}
+          <li class="nav-item">
+            <a href="" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#login">Login</a>
+          </li>
+        {{/if}}
+      </ul>
+    </div>
+  </div>
+</nav>
+{{! End Navbar }}
+
+{{! Logout }}
+<script>
+  function logout(){ Swal.fire({ title: "Apakah anda ingin logout?", icon: "warning", showCancelButton: true, confirmButtonColor: "#DC3545", cancelButtonColor: "#0D6EFD", confirmButtonText: "Logout" }).then((result) => {
+  if(result.isConfirmed){ location.href = "/logout"; } }) }
+</script>
+{{! End Logout }}

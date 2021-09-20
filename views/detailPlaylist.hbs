@@ -1,0 +1,24 @@
+{{> header}}
+
+    {{> navbar}}
+
+    <div class="container-fluid detailPlaylist">
+      <div class="container">
+        <h2 class="text-center mt-5 mb-5">{{playlistName}}</h2>
+        <div class="row justify-content-center">
+          {{#each playlists}}
+          <div class="card-music col-md-3 mt-4">
+            <img src="/uploads/img/{{this.cover_music}}" alt="..." class="card-img-top">
+            <p>{{this.title}}</p>
+            <audio src="/uploads/music/{{this.music}}" class="mt-2" controls></audio>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    {{> notification}}
+
+    {{> copyright}}
+
+{{> footer}}    

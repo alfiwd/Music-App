@@ -1,0 +1,182 @@
+{{> header}}
+
+    {{> navbar}}
+
+    <div class="container-fluid music">
+      <div class="container">
+        <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#add-music"><i class='bx bxs-add-to-queue' ></i> Tambah Music</button>
+        {{#if notEmpty}}
+          <table class="table table-bordered table-hover mt-3 text-center align-middle">
+            <thead class="table-light align-middle">
+              <tr>
+                <th scope="col">Judul Lagu</th>
+                <th scope="col">Musik</th>
+                <th scope="col">Cover Musik</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Artis</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each musics}}
+                <tr>
+                  <td>{{this.title}}</td>
+                  <td><audio src="/uploads/music/{{this.music}}" controls></audio></td>
+                  <td><img src="/uploads/img/{{this.cover_music}}" alt="..." style="width:200px;"></td>
+                  <td>{{this.genre_name}}</td>
+                  <td>{{this.artis_name}}</td>
+                  <td>
+                    <button class="btn btn-danger" onclick="deleteMusic({{this.id}})" style="width: 40px; height: 40px"><i class='bx bxs-trash-alt'></i></button>
+                    <button class="btn btn-warning" style="width: 40px; height: 40px" data-bs-toggle="modal" data-bs-target="#coming-soon"><i class='bx bx-pencil'></i></button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          <div class="text-center">
+            <img src="/public/img/img banner.svg" style="width: 50%;">
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- Modal add music --}}
+    <div class="modal fade" id="add-music" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><i class='bx bxs-add-to-queue'></i> Tambah Music</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/music" method="POST" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="title" class="col-form-label">Judul Lagu:</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Masukkan judul lagu" required="" autocomplete="off">
+              </div>
+              <div class="mb-3">
+                <label for="music" class="col-form-label">Musik:</label>
+                <input type="file" class="form-control" name="music" id="music" accept="audio/*" required="">
+              </div>
+              <div class="mb-3">
+                <label for="cover-music" class="col-form-label">Cover Musik:</label>
+                <input type="file" class="form-control" name="cover_music" id="cover-music" accept="image/*" required="">
+              </div>
+              <div class="mb-3">
+                <label for="genre" class="col-form-label">Genre:</label>
+                <select name="genre" id="genre" class="form-control" required="">
+                  <option selected>-- Pilih Genre --</option>
+                  {{#each genres}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="artist" class="col-form-label">Artist:</label>
+                <select name="artist" id="artist" class="form-control" required="">
+                  <option selected>-- Pilih Artist --</option>
+                  {{#each artists}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Tambah</button>
+            </form>  
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- End modal add music --}}
+
+    {{!-- Modal edit music --}}
+    {{#each musics}}
+      <div class="modal fade" id="edit-music-{{this.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"><i class='bx bxs-add-to-queue'></i> Edit Music</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/edit-music/{{this.id}}" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="title" class="col-form-label">Judul Lagu:</label>
+                  <input type="text" class="form-control" id="title" name="title" placeholder="{{this.title}}" required="">
+                </div>
+                <div class="mb-3">
+                  <label for="music" class="col-form-label">Musik:</label>
+                  <input type="file" class="form-control" name="music" id="music" accept="audio/*" required="">
+                </div>
+                <div class="mb-3">
+                  <label for="cover-music" class="col-form-label">Cover Musik:</label>
+                  <input type="file" class="form-control" name="cover_music" id="cover-music" accept="image/*" required="">
+                </div>
+                <div class="mb-3">
+                  <label for="genre" class="col-form-label">Genre:</label>
+                  <select name="genre" id="genre" class="form-control" required="">
+                    <option selected>-- Pilih Genre edit--</option>
+                    {{#each genres}}
+                      <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="artist" class="col-form-label">Artist:</label>
+                  <select name="artist" id="artist" class="form-control" required="">
+                    <option selected>-- Pilih Artist --</option>
+                    {{#each artists}}
+                      <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Edit</button>
+              </form>  
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    {{!-- End modal edit music --}}
+
+    {{!-- Modal coming soon --}}
+    <div class="modal fade" id="coming-soon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-center" id="exampleModalLabel">Coming Soon</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- End modal coming coon --}}
+
+    {{!-- Delete music --}}
+    <script>
+      function deleteMusic(id){
+        Swal.fire({
+          icon: "warning",
+          title: "Apakah ingin menghapus?",
+          showCancelButton: true,
+          confirmButtonColor: "#DC3545",
+          cancelButtonColor: "#0D6EFD",
+          confirmButtonText: "Hapus",
+        }).then((result) => {
+          if(result.isConfirmed){
+            location.href = `/delete-music/${id}`;
+          }
+        })
+      }
+    </script>
+    {{!-- End delete music --}}
+
+    {{> notification}}
+
+    {{> copyright}}
+
+{{> footer}}    
