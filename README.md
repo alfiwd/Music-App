@@ -1,6 +1,6 @@
 # Music App
 
-Music App adalah sebuah aplikasi sederhana dengan sistem CRUD (Create Read Update Delete). Music App dibangun menggunakan Node.js dengan framework Express.js, Bootstrap 5, Boxicons dan Sweetalert2.
+Music App adalah sebuah aplikasi musik sederhana dengan sistem CRUD (Create Read Update Delete). Music App dibangun menggunakan Node.js dengan framework Express.js, Bootstrap 5, Boxicons dan Sweetalert2.
 
 ## Langkah-langkah menginstall Music App
 
@@ -17,7 +17,8 @@ Music App adalah sebuah aplikasi sederhana dengan sistem CRUD (Create Read Updat
 11. Buka browser dan ketik http://localhost:1000/
 12. Aplikasi Music App siap digunakan (login sebagai admin -> email : admin@gmail.com, password : admin)
 
-Tampilan aplikasi Music App
+## Tampilan aplikasi Music App
+
 <img src="img_for_readme/header.png">
 <img src="img_for_readme/main.png">
 <img src="img_for_readme/footer.png">
